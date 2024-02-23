@@ -1,0 +1,248 @@
+﻿@page "/settings"
+@using RazorClassLib.Data
+@using RazorClassLib.Services
+@using WebApp.Controllers
+@using WebApp.Services
+@inject ITicketService ticketService
+@inject IOccasionService occasionService
+@rendermode RenderMode.InteractiveServer
+
+<div class="page-container">
+    <header class="header">
+        <div class="header-content">
+            <h1>Complete Ticket Purchase.</h1>
+            <a href="/">
+                <img src="../../back2.png" alt="gear" class="settingsimg" />
+            </a>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="event">
+            <div class="email-input" style="align-items: center;">
+                <label for="eventName">Add Event Name:</label>
+                <input class="input" type="text" id="eventName" @bind="EventName" />
+            </div>
+            <div class="email-input" style="align-items: center;">
+                <label for="eventTime">Add Event Time:</label>
+                <input class="input" type="datetime" id="eventTime" @bind="EventTime" />
+            </div>
+        </div>
+        @if (CanBuy)
+        {
+            <button @onclick="() => AddEvent()" class="buy" style="text-decoration:none; background-color: #151515; color: #FFFCF2">Add</button>
+        }
+        else
+        {
+            <button class="buy" style="text-decoration:none; background-color: #8d8d8d; color: #FFFCF2">Add</button>
+        }
+
+
+        <!-- Popup containers -->
+
+
+
+
+        @if(EventAddedSuccessfully)
+        {
+            CanBuy = false;
+            <input type="checkbox" id="successPopup" class="popup-checkbox" @bind="EventAddedSuccessfully" />
+            <div class="popup success">
+                <label for="successPopup" class="close-btn" @onclick="ClosePopUp">×</label>
+                <p>Event added successfully!</p>
+            </div>
+        }
+
+        @if(FailedToAddEvent)
+        {
+            <input type="checkbox" id="failPopup" class="popup-checkbox" @bind="FailedToAddEvent" />
+            <div class="popup fail">
+                <label for="failPopup" class="close-btn" @onclick="ClosePopUp">×</label>
+                <p>Failed to add event.</p>
+            </div>
+        }
+
+
+
+    </main>
+
+    <footer class="footer">
+        <p>TicketsRUS by PECorp.© 2024</p>
+    </footer>
+</div>
+
+
+<style>
+    .ticket-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .event {
+        padding-bottom: 150px;
+    }
+
+    .event-details {
+        font-size: 3.5rem;
+    }
+
+    label {
+        display: inline-block;
+        text-align: right;
+        color: #151515;
+        font-size: 3rem;
+        padding-bottom:100px;
+    }
+
+    .input {
+        width: 55%;
+        height: 60px;
+        border: 2px solid black;
+        background-color: #FFFCF2;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+        padding-top: 20px;
+        font-size:32px;
+    }
+
+    .page-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .header {
+        background-color: #151515;
+        color: #FFFCF2;
+        padding: 20px;
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .settingsimg {
+        width: 50px;
+        height: 50px;
+        margin-left: auto;
+    }
+
+    .content {
+        background-color: #FFFCF2;
+        flex-grow: 1;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        padding-left: 250px;
+        padding-top: 150px;
+    }
+
+    .footer {
+        background-color: #151515;
+        color: #FFFCF2;
+        padding: 20px;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
+
+    .buy {
+        width: 150px;
+        height:72px;
+        text-align: center;
+        color: #FFFCF2;
+        border: none;
+        font-size:2.75rem;
+    }
+    button{
+        margin-bottom:100px;
+    }
+
+    .popup-checkbox {
+        display: none;
+    }
+
+    .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        border: 2px solid #151515;
+        z-index: 1001;
+        display: none;
+        width: 300px;
+        height: 150px;
+    }
+
+        .popup p {
+            margin: 0;
+            font-size: xx-large;
+        }
+
+        .popup label.close-btn {
+            position: absolute;
+            top: 35px;
+            right: 20px;
+            cursor: pointer;
+        }
+
+    .popup-checkbox:checked + .popup {
+        display: block;
+    }
+
+    .success {
+        background-color: lightgreen;
+    }
+
+    .fail {
+        background-color: salmon;
+    }
+
+</style>
+
+@code {
+    public string? EventName { get; set; }
+    public DateTime EventTime { get; set; } = DateTime.Today;
+    public bool EventAddedSuccessfully { get; set; }
+    public bool FailedToAddEvent { get; set; }
+    public bool CanBuy { get; set; } = true;
+
+
+    public async Task AddEvent()
+    {
+        CanBuy = false;
+        Occasion newOccasion = new Occasion
+        {
+            OccasionName = EventName,
+            TimeOfDay = EventTime.ToUniversalTime()
+        };
+
+        try
+        {
+            await occasionService.AddNewOccasion(newOccasion);
+            //popup success here
+            EventAddedSuccessfully = true;
+        }
+        catch
+        {
+            //popup fail here   
+            FailedToAddEvent = true;
+        }
+
+    }
+    public void ClosePopUp()
+    {
+        CanBuy = true;
+        EventAddedSuccessfully = false;
+        FailedToAddEvent = false;
+    }
+}

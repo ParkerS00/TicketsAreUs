@@ -1,0 +1,146 @@
+﻿@inject HttpClient httpClient
+@inject ITicketService ticketService
+@inject IOccasionService occasionService
+
+@using RazorClassLib.Data
+@using RazorClassLib.Services
+
+<div class="page-container">
+    <header class="header">
+        <div class="header-content">
+            <h1>Ticket Statistics.</h1>
+            <a href="/">
+                <img src="../../back2.png" alt="gear" class="settingsimg" />
+            </a>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="ticket">
+            <table id="ticket-table">
+                <tr>
+                    <th>Occasion Name</th>
+                    <th>Guid</th>
+                    <th>Used</th>
+                </tr>
+                @foreach (var ticket in tickets)
+                {
+                    <tr>
+                        <td>@ticket.Occasion.OccasionName</td>
+                        <td>@ticket.Guid</td>
+                        <td>@ticket.IsUsed</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>TicketsRUS by PECorp.© 2024</p>
+    </footer>
+</div>
+
+<style>
+    .ticket-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .ticket {
+        width: 100%;
+        height: 1000px;
+        border: 2px solid black;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+        margin-bottom: 20px;
+    }
+
+    .page-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .header {
+        background-color: #151515;
+        color: #FFFCF2;
+        padding: 20px;
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .settingsimg {
+        width: 50px;
+        height: 50px;
+        margin-left: auto;
+    }
+
+    .content {
+        background-color: #FFFCF2;
+        flex-grow: 1;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .footer {
+        background-color: #151515;
+        color: #FFFCF2;
+        padding: 20px;
+        width: 100%;
+        position: sticky;
+        bottom: 0;
+        left: 0;
+    }
+
+    #ticket-table {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        color: #151515
+    }
+
+        #ticket-table td, #ticket-table th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #ticket-table tr:nth-child(even) {
+            background-color: #FFFCF2;
+        }
+
+        #ticket-table tr:hover {
+            background-color: #ddd;
+        }
+
+        #ticket-table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #FFFCF2;
+            color: #151515;
+        }
+</style>
+
+@code {
+    public IEnumerable<Ticket> tickets { get; set; } = new List<Ticket>();
+    public IEnumerable<Occasion> occasions { get; set; } = new List<Occasion>();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        occasions = await occasionService.GetAllOccasions();
+        tickets = await ticketService.GetAllTickets();
+    }
+
+}

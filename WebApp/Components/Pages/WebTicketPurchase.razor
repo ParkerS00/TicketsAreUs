@@ -1,0 +1,221 @@
+﻿@inject HttpClient httpClient
+@inject ITicketService ticketService
+@inject IOccasionService occasionService
+@inject IConfiguration config
+@rendermode InteractiveServer
+
+@page "/ticketpurchase/{OccasionId:int}"
+@using QRCoder
+@using RazorClassLib.Data
+@using RazorClassLib.Services
+@using System.Net.Mail
+@using System.Net
+
+<div class="page-container">
+    <header class="header">
+        <div class="header-content">
+            <h1>Complete Ticket Purchase.</h1>
+            <a href="/">
+                <img src="../../back2.png" alt="gear" class="settingsimg" />
+            </a>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="event">
+            <p class="event-details">@currentOccasion.OccasionName</p>
+            <p class="event-details">@currentOccasion.TimeOfDay</p>
+            <p class="event-details">10</p>
+        </div>
+
+        <div class="email-input">
+            <label>Email:</label>
+            <input class="input" type="text" @bind="@userEmail" />
+        </div>
+        <button @onclick="() => SendEmail(new MailAddress(userEmail))" class="buy" style="text-decoration:none; background-color: #151515; color: #FFFCF2">Buy</button>
+    </main>
+
+    <footer class="footer">
+        <p>TicketsRUS by PECorp.© 2024</p>
+    </footer>
+</div>
+
+
+<style>
+    .ticket-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .event {
+        padding-bottom: 150px;
+    }
+
+    .event-details {
+        font-size: 3.5rem;
+    }
+
+    label {
+        display: inline-block;
+        width: 150px;
+        text-align: right;
+        color: #151515;
+        font-size: 3rem;
+    }
+
+    .input {
+        width: 55%;
+        height: 60px;
+        border: 2px solid black;
+        background-color: #FFFCF2;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+        padding-top: 20px;
+        font-size: 32px;
+    }
+
+    .email-input{
+        padding-bottom: 100px;
+    }
+
+
+    .page-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .header {
+        background-color: #151515;
+        color: #FFFCF2;
+        padding: 20px;
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .settingsimg {
+        width: 50px;
+        height: 50px;
+        margin-left: auto;
+    }
+
+    .content {
+        background-color: #FFFCF2;
+        flex-grow: 1;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        padding-left: 250px;
+        padding-top: 150px;
+    }
+
+    .footer {
+        background-color: #151515;
+        color: #FFFCF2;
+        padding: 20px;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+    }
+
+    .buy {
+        width: 150px;
+        height: 72px;
+        text-align: center;
+        color: #FFFCF2;
+        border: none;
+        font-size: 2.75rem;
+    }
+
+    button {
+        margin-bottom: 100px;
+    }
+
+</style>
+
+@code {
+    [Parameter]
+    public int OccasionId { get; set; }
+
+    public Occasion currentOccasion { get; set; } = new();
+    public User currentUser { get; set; } = new();
+    public string userEmail { get; set; }
+    public string fromMail { get; set; }
+    private string senderKey { get; set; }
+
+
+    public IEnumerable<Ticket> tickets { get; set; } = new List<Ticket>();
+    public IEnumerable<Occasion> occasions { get; set; } = new List<Occasion>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        tickets = await ticketService.GetAllTickets();
+        occasions = await occasionService.GetAllOccasions();
+        currentOccasion = await occasionService.GetOccasion(OccasionId);
+
+        fromMail = config["emailSender"];
+        senderKey = config["senderKey"];
+    }
+
+    public async Task<string> SendEmail(MailAddress receiverEmail)
+    {
+        var newTicket = await CreateTicket();
+
+        try
+        {
+            var from = new MailAddress(fromMail, "TicketsRUs");
+            var to = receiverEmail;
+            var message = new MailMessage(from, to);
+
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qRCodeData = qrGenerator.CreateQrCode(newTicket.Guid.ToString(), QRCodeGenerator.ECCLevel.Q);
+            PngByteQRCode qrCode = new PngByteQRCode(qRCodeData);
+            byte[] image = qrCode.GetGraphic(5);
+            Stream stream = new MemoryStream(image);
+            var qrAttachment = new Attachment(stream, "qrCode.png");
+            string body = $"<img src=\"ci:{qrAttachment.ContentId}\" />";
+            message.Attachments.Add(qrAttachment);
+
+            message.Subject = "no-reply Event Ticket QR Code";
+            message.IsBodyHtml = true;
+            message.Body = $"<html><body><h1>Event Ticket</h1><p>Use this ticket at the entranct to get it.</p>{body}</body></html>";
+
+            using (var client = new System.Net.Mail.SmtpClient("smtp.gmail.com"))
+            {
+                client.Port = 587;
+                client.EnableSsl = true;
+
+                client.Credentials = new NetworkCredential(fromMail, senderKey);
+
+                client.Send(message);
+            }
+            return "Email Sent";
+        }
+        catch
+        {
+            return "Email Not Sent :(";
+        }
+    }
+
+    public async Task<Ticket> CreateTicket()
+    {
+        Ticket newTicket = new Ticket()
+            {
+                Guid = Guid.NewGuid(),
+                OccasionId = OccasionId,
+                IsUsed = false
+            };
+
+        await ticketService.AddNewTicket(newTicket);
+        return newTicket;
+    }
+}

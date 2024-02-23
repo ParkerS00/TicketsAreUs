@@ -1,0 +1,178 @@
+﻿@inject HttpClient httpClient
+@inject ITicketService ticketService
+@inject IOccasionService occasionService
+@inject IEnvironmentService environmentService
+@inject NavigationManager NavManager
+
+@page "/"
+@using RazorClassLib.Data
+@using RazorClassLib.Services
+@using System.Net.Http.Json
+
+
+
+<div class="page-container">
+    <header class="header">
+        <div class="header-content">
+            <h1>Events.</h1>
+            <a href="/settings">
+                @if (environmentService.IsWebApp == false)
+                {
+                    <img src="../../settingsgear.png" alt="gear" class="settingsimg" />
+                }
+                else
+                {
+                    <img src="../../plus.png" alt="gear" class="settingsimg" />
+                }
+            </a>
+        </div>
+    </header>
+
+    <main class="content">
+        <div class="ticket-container">
+            @foreach (var occasion in occasions)
+            {
+                <a href=/tickets style="text-decoration:none; color: #151515 ">
+                    <div class="ticket">
+                        @occasion.OccasionName
+                        @if (environmentService.IsWebApp == true)
+                        {
+                            <a class="buy" href="@(($"/ticketpurchase/{occasion.Id}"))" style="text-decoration:none; color: #FFFCF2; background-color: #151515;">Buy</a>
+                        }
+                        else
+                        {
+                            <a class="buy" href="@(($"/scan/{occasion.Id}"))" style="text-decoration:none; color: #FFFCF2 "><img src="../../qrscan.png" alt="gear" class="settingsimg" /></a>
+                        }
+                    </div>
+                </a>
+            }
+        </div>
+    </main>
+
+
+
+    <footer class="footer">
+
+        <p>TicketsRUS by PECorp.© 2024</p>
+
+    </footer>
+</div>
+
+<style>
+    .buy {
+        width: 125px;
+        text-align: center;
+        border: none;
+    }
+
+    .ticket-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .ticket {
+        width: 100%;
+        height: 200px;
+        border: 2px solid black;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+        margin-bottom: 20px;
+        font-size: 2.5em;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .page-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .header {
+        background-color: #151515;
+        color: #FFFCF2;
+        padding: 20px;
+        width: 100%;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    .settingsimg {
+        width: 50px;
+        height: 50px;
+        max-width: 100%;
+        height: auto;
+    }
+
+
+    .content {
+        background-color: #FFFCF2;
+        flex-grow: 1;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .footer {
+        background-color: #151515;
+        color: #FFFCF2;
+        padding: 20px;
+        width: 100%;
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        display: flex; /* Add this */
+        justify-content: center; /* Add this */
+        align-items: center; /* Add this */
+    }
+
+</style>
+
+@code {
+    public bool showBuy = true;
+    public IEnumerable<Ticket> tickets { get; set; } = new List<Ticket>();
+    public IEnumerable<Occasion> occasions { get; set; } = new List<Occasion>();
+    private List<Occasion> MauiOccasions { get; set; } = new List<Occasion>();
+    private List<Occasion> OnlineOccasions { get; set; } = new List<Occasion>();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        tickets = await ticketService.GetAllTickets();
+        occasions = await occasionService.GetAllOccasions();
+
+        //await SyncEvents();
+    }
+
+
+    // public async Task SyncEvents()
+    // {
+    //     MauiOccasions = await occasionService.GetAllOccasions();
+    //     OnlineOccasions = await httpClient.GetFromJsonAsync<List<Occasion>>("https://localhost:7257/Occasion");
+
+    //     foreach (var occasion in OnlineOccasions)
+    //     {
+    //         var offlineOccasion = MauiOccasions
+    //             .Where(o => o.Id == occasion.Id)
+    //             .FirstOrDefault();
+
+    //         if (offlineOccasion is null)
+    //         {
+    //             await occasionService.AddNewOccasion(occasion);
+    //             offlineOccasion = occasion;
+    //         }
+    //     }
+    // }
+}
