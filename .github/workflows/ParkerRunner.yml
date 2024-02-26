@@ -1,53 +1,53 @@
-name: ParkerRunner
-on: [push]
+# name: ParkerRunner
+# on: [push]
     
-jobs:
-  Deploy:
-    runs-on:
-      - parker
+# jobs:
+#   Deploy:
+#     runs-on:
+#       - parker
 
-    steps:
-      - name: "clean" 
-        run: |  
-          docker compose down -v
-          cd ../../
-          rm -rf ./ticketsrus-cort-enoch-parker
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+#     steps:
+#       - name: "clean" 
+#         run: |  
+#           docker compose down -v
+#           cd ../../
+#           rm -rf ./ticketsrus-cort-enoch-parker
+#         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
-      - name: "clone"
-        run: |
-          git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/SnowSE/ticketsrus-cort-enoch-parker.git
-        working-directory: ./../../../
+#       - name: "clone"
+#         run: |
+#           git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/SnowSE/ticketsrus-cort-enoch-parker.git
+#         working-directory: ./../../../
 
-      - name: "build"
-        run: |
-          docker compose up --build -d
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+#       - name: "build"
+#         run: |
+#           docker compose up --build -d
+#         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
-  success:
-    name: One with everything
-    runs-on: parker
-    steps:
-      - uses: actions/checkout@master
-      - name: Microsoft Teams Notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: always()
-        with:
-          webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
-          needs: ${{ toJson(needs) }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
+#   success:
+#     name: One with everything
+#     runs-on: parker
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: Microsoft Teams Notification
+#         uses: skitionek/notify-microsoft-teams@master
+#         if: always()
+#         with:
+#           webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
+#           needs: ${{ toJson(needs) }}
+#           job: ${{ toJson(job) }}
+#           steps: ${{ toJson(steps) }}
 
-  if_failure:
-    name: Only if failure
-    runs-on: parker
-    steps:
-      - uses: actions/checkout@master
-      - name: Microsoft Teams Notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: failure()
-        with:
-          webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
+#   if_failure:
+#     name: Only if failure
+#     runs-on: parker
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: Microsoft Teams Notification
+#         uses: skitionek/notify-microsoft-teams@master
+#         if: failure()
+#         with:
+#           webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
 
 
 

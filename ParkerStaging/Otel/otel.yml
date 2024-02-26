@@ -1,0 +1,24 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+exporters:
+  prometheus:
+    endpoint: otel:8889
+
+extensions:
+  health_check:
+  zpages:
+    endpoint: otel:55679
+
+processors: 
+  batch:
+
+service:
+  extensions: [zpages, health_check]
+  pipelines: 
+    metrics: 
+      receivers: [otlp]
+      exporters: [prometheus]
