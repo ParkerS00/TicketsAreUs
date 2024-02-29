@@ -14,6 +14,7 @@ services:
       - ../Dump/20240215.09.46.07.sql:/docker-entrypoint-initdb.d/database.sql
     networks:
       - databaseTunnel
+      - otel
 
   blazorapp:
     container_name: blazorapp
@@ -27,6 +28,7 @@ services:
       - pec_tickets=user id= postgres; password=postgres; server=db; database= postgres; port= 5432
     networks:
       - databaseTunnel
+      - otel
     healthcheck:
       test: wget --tries=1 http://localhost:8080/health || exit 1
       interval: 2s
@@ -83,7 +85,7 @@ services:
       - 3000:3000
     depends_on:
       - prometheus
-      - tempo
+      # - tempo
       - loki
     networks:
       otel:
@@ -122,22 +124,22 @@ services:
       otel:
 
 
-  tempo:
-    image: grafana/tempo:2.0.1
-    container_name: tempo
-    command: [ "-config.file=/etc/tempo.yaml" ]
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./tempo/tempo.yml:/etc/tempo.yaml
-      - tempo:/tmp/tempo
-    restart: unless-stopped
-    ports:
-      - 3200:3200  
-      - 4007:4317  
-    depends_on:
-      - otel-collector
-    networks:
-      otel:
+  # tempo:
+  #   image: grafana/tempo:2.0.1
+  #   container_name: tempo
+  #   command: [ "-config.file=/etc/tempo.yaml" ]
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - ./tempo/tempo.yml:/etc/tempo.yaml
+  #     - tempo:/tmp/tempo
+  #   restart: unless-stopped
+  #   ports:
+  #     - 3200:3200  
+  #     - 4007:4317  
+  #   depends_on:
+  #     - otel-collector
+  #   networks:
+  #     otel:
 
 networks:
   otel:
@@ -146,6 +148,6 @@ networks:
 
 volumes:
   loki:
-  tempo:
+  # tempo:
   prometheus:
   grafana-data:

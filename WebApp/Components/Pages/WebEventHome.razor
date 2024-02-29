@@ -1,3 +1,12 @@
 ﻿@page "/"
+@inject ILogger<WebEventHome> log
 
 <RazorClassLib.Components.EventHome></RazorClassLib.Components.EventHome>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        log.LogInformation("WOWOWOWOW");
+    }
+}

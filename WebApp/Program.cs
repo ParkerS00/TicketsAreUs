@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using RazorClassLib.Data;
 using RazorClassLib.Services;
 using System.Text.Json.Serialization;
@@ -19,7 +23,35 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
+builder.Services.AddLogging();
 
+const string serviceName = "web-app";
+
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options
+        .SetResourceBuilder(
+            ResourceBuilder.CreateDefault()
+                .AddService(serviceName))
+        .AddOtlpExporter(opt =>
+            {
+                opt.Endpoint = new Uri("http://otel-collector:4317");
+            })
+        .AddConsoleExporter();
+});
+
+builder.Services.AddOpenTelemetry()
+      .ConfigureResource(resource => resource.AddService(serviceName))
+      .WithTracing(tracing => tracing
+          .AddAspNetCoreInstrumentation()
+          .AddConsoleExporter()
+          .AddOtlpExporter(o =>
+            o.Endpoint = new Uri("http://otel-collector:4317")))
+      .WithMetrics(metrics => metrics
+          .AddAspNetCoreInstrumentation()
+          .AddConsoleExporter()
+          .AddOtlpExporter(o =>
+            o.Endpoint = new Uri("http://otel-collector:4317")));
 
 builder.Services.AddDbContextFactory<TicketContext>(config => config.UseNpgsql(builder.Configuration["pec_tickets"]));
 builder.Services.AddSingleton<IOccasionService, OccasionService>();
