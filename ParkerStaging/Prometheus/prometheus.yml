@@ -14,4 +14,9 @@ scrape_configs:
         target_label: instance
       - target_label: __address__
         replacement: blackbox:9115
+    # - job_name:
+    #   scrape_interval: 10s
+    #   static_configs:
+    #   - targets: ['otel-collector:8889']
+    #   - targets: ['otel-collector:8888']
     

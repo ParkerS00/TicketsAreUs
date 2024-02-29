@@ -83,6 +83,8 @@ services:
       - 3000:3000
     depends_on:
       - prometheus
+      - tempo
+      - loki
     networks:
       otel:
 
@@ -105,12 +107,45 @@ services:
       otel:
 
 
+  loki:
+    image: grafana/loki:2.8.0
+    container_name: loki
+    command: -config.file=/etc/loki/local-config.yml
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./loki/loki.yml:/etc/loki/local-config.yml
+      - loki:/data/loki
+    restart: unless-stopped
+    ports:
+      - 3100:3100
+    networks:
+      otel:
+
+
+  tempo:
+    image: grafana/tempo:2.0.1
+    container_name: tempo
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./tempo/tempo.yml:/etc/tempo.yaml
+      - tempo:/tmp/tempo
+    restart: unless-stopped
+    ports:
+      - 3200:3200  
+      - 4007:4317  
+    depends_on:
+      - otel-collector
+    networks:
+      otel:
+
 networks:
   otel:
   databaseTunnel:
     driver: bridge
 
-
 volumes:
+  loki:
+  tempo:
   prometheus:
   grafana-data:
