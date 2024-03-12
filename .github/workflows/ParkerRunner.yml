@@ -27,6 +27,7 @@ jobs:
 
       - name: "lint"
         run: |
+          dotnet format
           dotnet format --verify-no-changes
         working-directory: ./../../../ticketsrus-cort-enoch-parker/WebApp
 
