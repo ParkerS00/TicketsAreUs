@@ -54,25 +54,25 @@ public class TicketService : ITicketService
             .FirstOrDefaultAsync();
     }
 
-    public async Task UpdateTicket(int id)
-    {
-        var context = await contextFactory.CreateDbContextAsync();
-        var oldTicket = await context.Tickets.Where(t => t.Id == id).FirstOrDefaultAsync();
+    // public async Task UpdateTicket(int id)
+    // {
+    //     var context = await contextFactory.CreateDbContextAsync();
+    //     var oldTicket = await context.Tickets.Where(t => t.Id == id).FirstOrDefaultAsync();
 
-        if (oldTicket == null)
-        {
-            throw new Exception();
-        }
+    //     if (oldTicket == null)
+    //     {
+    //         throw new Exception();
+    //     }
 
-        if (oldTicket.IsUsed == false)
-        {
-            oldTicket.IsUsed = true;
-            context.Update(oldTicket);
-            await context.SaveChangesAsync();
-        }
-        else
-        {
-            throw new TicketAlreadyScannedException();
-        }
-    }
+    //     if (oldTicket.IsUsed == false)
+    //     {
+    //         oldTicket.IsUsed = true;
+    //         context.Update(oldTicket);
+    //         await context.SaveChangesAsync();
+    //     }
+    //     else
+    //     {
+    //         throw new TicketAlreadyScannedException();
+    //     }
+    // }
 }
