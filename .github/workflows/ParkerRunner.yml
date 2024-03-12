@@ -7,12 +7,12 @@ jobs:
       - parker
 
     steps:
-      - name: "clean" 
-        run: |  
-          docker compose down -v
-          cd ../../
-          rm -rf ./ticketsrus-cort-enoch-parker
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+      # - name: "clean" 
+      #   run: |  
+      #     docker compose down -v
+      #     cd ../../
+      #     rm -rf ./ticketsrus-cort-enoch-parker
+      #   working-directory: ./../../../TicketsAreUs/ParkerStaging
 
       - name: "clone"
         run: |
@@ -23,12 +23,12 @@ jobs:
       - name: "build"
         run: |
           docker compose up --build -d
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+        working-directory: ./../../../TicketsAreUs/ParkerStaging
 
       - name: "lint"
         run: |
           dotnet format --verify-no-changes
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/WebApp
+        working-directory: ./../../../TicketsAreUs/WebApp
 
       - name: "unit test"
         run: |
