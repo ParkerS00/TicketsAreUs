@@ -7,14 +7,14 @@ jobs:
       - parker
 
     steps:
-      # - name: "clean" 
-      #   run: |  
-      #     pwd
-      #     docker compose down -v
-      #     cd ../../
-      #     pwd
-      #     rm -rf ./TicketsAreUs
-      #   working-directory: ./../../../TicketsAreUs/ParkerStaging
+      - name: "clean" 
+        run: |  
+          pwd
+          docker compose down -v
+          cd ../../
+          pwd
+          rm -rf ./TicketsAreUs
+        working-directory: ./../../../TicketsAreUs/ParkerStaging
         #
 
       - name: "clone"
