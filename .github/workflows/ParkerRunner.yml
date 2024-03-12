@@ -9,41 +9,37 @@ jobs:
     steps:
       - name: "clean" 
         run: |  
-          pwd
-           docker compose down -v
+          docker compose down -v
           cd ../../
-          pwd
-           rm -rf ./TicketsAreUs
-        working-directory: ./../../../TicketsAreUs/ParkerStaging
-      
+          rm -rf ./ticketsrus-cort-enoch-parker
+        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
       - name: "clone"
         run: |
           pwd
-          git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/ParkerS00/TicketsAreUs.git
+          git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/SnowSE/ticketsrus-cort-enoch-parker.git
         working-directory: ./../../../
 
       - name: "build"
         run: |
           docker compose up --build -d
-        working-directory: ./../../../TicketsAreUs/ParkerStaging
+        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
       - name: "lint"
         run: |
           dotnet format --verify-no-changes
-        working-directory: ./../../../TicketsAreUs/WebApp
+        working-directory: ./../../../ticketsrus-cort-enoch-parker/WebApp
 
       - name: "unit test"
         run: |
 
-      # - name: Teams notification
-      #   uses: skitionek/notify-microsoft-teams@master
-      #   if: always()
-      #   with:
-      #     webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
-      #     needs: ${{ toJson(needs) }}
-      #     job: ${{ toJson(job) }}
-      #     steps: ${{ toJson(steps) }}
-      #     overwrite: "{title: `Overwrote title in ${workflow_link}`}"
-
+      - name: Teams notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: always()
+        with:
+          webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+          overwrite: "{title: `Overwrote title in ${workflow_link}`}"
 
