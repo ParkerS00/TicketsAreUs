@@ -119,7 +119,7 @@ services:
       - loki:/data/loki
     restart: unless-stopped
     ports:
-      - 3100:3100
+      - 3121:3100
     networks:
       otel:
 
