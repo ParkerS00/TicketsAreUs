@@ -7,12 +7,13 @@ jobs:
       - parker
 
     steps:
-      # - name: "clean" 
-      #   run: |  
-      #     docker compose down -v
-      #     cd ../../
-      #     rm -rf ./ticketsrus-cort-enoch-parker
-      #   working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+      - name: "clean" 
+        run: |  
+          docker compose down -v
+          cd ../../
+          rm -rf ./ticketsrus-cort-enoch-parker
+        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+        #
 
       - name: "clone"
         run: |
@@ -27,7 +28,7 @@ jobs:
 
       - name: "lint"
         run: |
-          docker run -i --rm -v $(pwd):/app -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes --severity warn
+          dotnet format --verify-no-changes --severity warn
         working-directory: ./../../../ticketsrus-cort-enoch-parker/WebApp
 
       - name: "unit test"
