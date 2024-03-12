@@ -16,8 +16,6 @@ jobs:
 
       - name: "clone"
         run: |
-          dotnet clean
-          dotnet format
           git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/SnowSE/ticketsrus-cort-enoch-parker.git
         working-directory: ./../../../
 
@@ -32,6 +30,9 @@ jobs:
         if: failure()
         with:
           webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
           overwrite: "{title: `Overwrote title in ${workflow_link}`}"
 
 #   if_failure:
