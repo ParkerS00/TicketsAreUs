@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: "clean" 
         run: |  
-          docker compose down -v
+          docker compose down -v || true
           cd ../../
           rm -rf ./ticketsrus-cort-enoch-parker
         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
