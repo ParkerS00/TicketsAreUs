@@ -9,6 +9,7 @@ jobs:
     steps:
       - name: "clean" 
         run: |  
+          dotnet oops
           docker compose down -v || true
           cd ../../
           rm -rf ./ticketsrus-cort-enoch-parker
