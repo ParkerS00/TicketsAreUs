@@ -7,12 +7,12 @@ jobs:
       - parker
 
     steps:
-      - name: "clean" 
-        run: |  
-          docker compose down -v || true
-          cd ../../
-          rm -rf ./ticketsrus-cort-enoch-parker
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+    #   - name: "clean" 
+    #     run: |  
+    #       docker compose down -v || true
+    #       cd ../../
+    #       rm -rf ./ticketsrus-cort-enoch-parker
+    #     working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
       - name: "clone"
         run: |
@@ -41,7 +41,6 @@ jobs:
           job: ${{ toJson(job) }}
           steps: ${{ toJson(steps) }}
           overwrite: "{title: `Overwrote title in ${workflow_link}`}"
-          dry_run: True
 
   if_failure:
     name: Failure
