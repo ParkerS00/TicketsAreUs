@@ -42,7 +42,7 @@ services:
     container_name: parker-blackbox
     restart: unless-stopped
     ports:
-      - 9115:9115
+      - 9460:9115
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./blackbox/blackbox.yml:/etc/blackbox/blackbox.yml
@@ -57,7 +57,7 @@ services:
     hostname: prometheus
     restart: unless-stopped
     ports:
-      - 9090:9090
+      - 9459:9090
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
