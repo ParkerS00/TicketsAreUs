@@ -27,7 +27,7 @@ jobs:
 
       - name: "lint"
         run: |
-          dotnet format --verify-no-changes --severity warn
+          dotnet format --verify-no-changes
         working-directory: ./../../../ticketsrus-cort-enoch-parker/WebApp
 
       - name: "unit test"
