@@ -7,15 +7,16 @@ jobs:
       - parker
 
     steps:
-      - name: "clean" 
-        run: |  
-          docker compose down -v || True
-          cd ../../
-          rm -rf ./ticketsrus-cort-enoch-parker
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+      # - name: "clean" 
+      #   run: |  
+      #     docker compose down -v || True
+      #     cd ../../
+      #     rm -rf ./ticketsrus-cort-enoch-parker
+      #   working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
       - name: "clone"
         run: |
+          pwd
           git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/SnowSE/ticketsrus-cort-enoch-parker.git
         working-directory: ./../../../
 
