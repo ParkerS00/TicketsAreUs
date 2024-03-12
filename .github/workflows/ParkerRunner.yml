@@ -33,6 +33,8 @@ jobs:
 
       - name: "unit test"
         run: |
+          dotnet test
+      working-directory: ./../../../ticketsrus-cort-enoch-parker/Test  
 
       - name: Teams notification
         uses: skitionek/notify-microsoft-teams@master
