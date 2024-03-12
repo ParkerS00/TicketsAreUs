@@ -26,13 +26,13 @@ namespace WebApp.Services
             throw new NotImplementedException();
         }
 
-        // public async Task<List<Occasion>> GetAllOccasions()
-        // {
-        //     var context = contextFactory.CreateDbContext();
-        //     return await context.Occasions
-        //         .Include(o => o.Tickets)
-        //         .ToListAsync();
-        // }
+        public async Task<List<Occasion>> GetAllOccasions()
+        {
+            var context = contextFactory.CreateDbContext();
+            return await context.Occasions
+                .Include(o => o.Tickets)
+                .ToListAsync();
+        }
 
         public async Task<Occasion> GetOccasion(int id)
         {
