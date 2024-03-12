@@ -31,7 +31,7 @@ namespace WebApp.Services
             var context = contextFactory.CreateDbContext();
             return await context.Occasions
                 .Include(o => o.Tickets)
-                .ToListAsync();   
+                .ToListAsync();
         }
 
         public async Task<Occasion> GetOccasion(int id)

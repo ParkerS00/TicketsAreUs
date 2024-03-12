@@ -58,7 +58,7 @@ public class TicketService : ITicketService
     {
         var context = await contextFactory.CreateDbContextAsync();
         var oldTicket = await context.Tickets.Where(t => t.Id == id).FirstOrDefaultAsync();
-        if(oldTicket == null) { throw new Exception(); }
+        if (oldTicket == null) { throw new Exception(); }
         if (oldTicket.IsUsed == false)
         {
             oldTicket.IsUsed = true;

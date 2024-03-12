@@ -1,3 +1,4 @@
+﻿using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -7,7 +8,6 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using RazorClassLib.Data;
 using RazorClassLib.Services;
-using System.Text.Json.Serialization;
 using WebApp.Components;
 using WebApp.Services;
 

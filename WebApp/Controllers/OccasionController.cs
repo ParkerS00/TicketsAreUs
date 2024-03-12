@@ -11,7 +11,7 @@ namespace WebApp.Controllers;
 public class OccasionController : ControllerBase
 {
     private readonly IOccasionService occasionService;
-    public OccasionController (IOccasionService occasionService)
+    public OccasionController(IOccasionService occasionService)
     {
         this.occasionService = occasionService;
     }
