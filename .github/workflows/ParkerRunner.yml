@@ -22,8 +22,11 @@ jobs:
       - name: "build"
         run: |
           docker compose up --build -d
-          docker run -i --rm -v $(pwd):/app -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes --severity warn
         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+
+      - name: "lint"
+        run: |
+          docker run -i --rm -v $(pwd):/app -w /app mcr.microsoft.com/dotnet/sdk:8.0 dotnet format --verify-no-changes --severity warn
 
       - name: Teams notification
         uses: skitionek/notify-microsoft-teams@master
