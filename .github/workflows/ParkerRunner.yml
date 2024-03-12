@@ -27,14 +27,14 @@ jobs:
           docker compose up --build -d
         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
-  success:
-    name: Success
+  Teams:
+    name: Teams notification
     runs-on: parker
     steps:
       - uses: actions/checkout@master
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
-        if: success()
+        if: always()
         with:
           webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
           needs: ${{ toJson(needs) }}
@@ -42,20 +42,20 @@ jobs:
           steps: ${{ toJson(steps) }}
           overwrite: "{title: `Overwrote title in ${workflow_link}`}"
 
-  if_failure:
-    name: Failure
-    runs-on: parker
-    steps:
-      - uses: actions/checkout@master
-      - name: Microsoft Teams Notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: failure()
-        with:
-          webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
-          needs: ${{ toJson(needs) }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
-          overwrite: "{title: `Overwrote title in ${workflow_link}`}"
+#   if_failure:
+#     name: Failure
+#     runs-on: parker
+#     steps:
+#       - uses: actions/checkout@master
+#       - name: Microsoft Teams Notification
+#         uses: skitionek/notify-microsoft-teams@master
+#         if: failure()
+#         with:
+#           webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
+#           needs: ${{ toJson(needs) }}
+#           job: ${{ toJson(job) }}
+#           steps: ${{ toJson(steps) }}
+#           overwrite: "{title: `Overwrote title in ${workflow_link}`}"
 
 
 
