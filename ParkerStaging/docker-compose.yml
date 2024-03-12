@@ -111,7 +111,7 @@ services:
 
   loki:
     image: grafana/loki:2.8.0
-    container_name: loki
+    container_name: parker-loki
     command: -config.file=/etc/loki/local-config.yml
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -119,7 +119,7 @@ services:
       - loki:/data/loki
     restart: unless-stopped
     ports:
-      - 3100:3100
+      - 9231:3100
     networks:
       otel:
 
