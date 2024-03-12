@@ -42,6 +42,6 @@ jobs:
           needs: ${{ toJson(needs) }}
           job: ${{ toJson(job) }}
           steps: ${{ toJson(steps) }}
-          overwrite: "{title: `Overwrote title in ${workflow_link}`}"
+          overwrite: "{title: I am sad}"
 
 
