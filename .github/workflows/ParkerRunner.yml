@@ -34,7 +34,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Microsoft Teams Notification
         uses: skitionek/notify-microsoft-teams@master
-        if: always()
+        if: success()
         with:
           webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
           needs: ${{ toJson(needs) }}
