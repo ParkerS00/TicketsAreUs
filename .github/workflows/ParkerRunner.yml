@@ -5,6 +5,7 @@ jobs:
   Deploy:
     runs-on:
       - parker
+      
     steps:
       - name: "clean" 
         run: |  
