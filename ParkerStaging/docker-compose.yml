@@ -100,11 +100,11 @@ services:
       - ./otel/otel.yml:/etc/otel-collector-config.yaml
     restart: unless-stopped
     ports:
-      - 8888:8888
-      - 8889:8889
-      - 4317:4317
-      - 9200:55679
-      - 13133:13133
+      - 5432:8888
+      - 5433:8889
+      - 5434:4317
+      - 5435:55679
+      - 54321:13133
     networks:
       otel:
 
