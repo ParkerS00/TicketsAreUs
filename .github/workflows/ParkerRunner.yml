@@ -17,7 +17,7 @@ jobs:
       - name: "clone"
         run: |
           pwd
-          git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/ParkerS00/ticketsrus-cort-enoch-parker.git
+          git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/ParkerS00/TicketsAreUs.git
         working-directory: ./../../../
 
       - name: "build"
