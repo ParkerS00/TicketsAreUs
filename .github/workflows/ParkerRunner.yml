@@ -11,6 +11,7 @@ jobs:
         run: |  
           docker compose down -v
           cd ../../
+          pwd
           rm -rf ./ticketsrus-cort-enoch-parker
         working-directory: ./../../../TicketsAreUs/ParkerStaging
 
