@@ -11,7 +11,7 @@ jobs:
         run: |  
           docker compose down -v || True
           cd ../../
-          rm -rf ./ticketsrus-cort-enoch-parker
+          rm -rf ./ticketsrus-cort-enoch-parker || True
         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
 
@@ -43,4 +43,4 @@ jobs:
           job: ${{ toJson(job) }}
           steps: ${{ toJson(steps) }}
           overwrite: "{title: `Overwrote title in ${workflow_link}`}"
-          
+
