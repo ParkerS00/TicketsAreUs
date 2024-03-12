@@ -16,16 +16,19 @@ jobs:
 
       - name: "clone"
         run: |
+          dotnet clean
+          dotnet format
           git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/SnowSE/ticketsrus-cort-enoch-parker.git
         working-directory: ./../../../
 
       - name: "build"
         run: |
+          
           docker compose up --build -d
         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
   success:
-    name: One with everything
+    name: Success
     runs-on: parker
     steps:
       - uses: actions/checkout@master
@@ -39,7 +42,7 @@ jobs:
           steps: ${{ toJson(steps) }}
 
   if_failure:
-    name: Only if failure
+    name: Failure
     runs-on: parker
     steps:
       - uses: actions/checkout@master
@@ -48,6 +51,9 @@ jobs:
         if: failure()
         with:
           webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
 
 
 
