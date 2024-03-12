@@ -5,7 +5,7 @@ jobs:
   Deploy:
     runs-on:
       - parker
-      
+
     steps:
       - name: "clean" 
         run: |  
@@ -13,7 +13,7 @@ jobs:
           cd ../../
           rm -rf ./ticketsrus-cort-enoch-parker
         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
-        #
+        
 
       - name: "clone"
         run: |
