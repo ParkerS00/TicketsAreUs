@@ -10,7 +10,7 @@ jobs:
       - name: "clean" 
         run: |  
           pwd
-          docker compose down -v
+          # docker compose down -v
           cd ../../
           pwd
           rm -rf ./TicketsAreUs
