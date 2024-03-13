@@ -1,4 +1,4 @@
-using RazorClassLib.Data;
+﻿using RazorClassLib.Data;
 using System.Net.Http;
 using System.Net.Http.Json;
 using FluentAssertions;
