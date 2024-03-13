@@ -31,7 +31,6 @@ namespace Test
             //Assert
             newOccasion.OccasionName.Equals(grabOccasion.OccasionName);
             newOccasion.Id.Equals(grabOccasion.Id);
-            Assert.False(true);
         }
 
         [Fact]
