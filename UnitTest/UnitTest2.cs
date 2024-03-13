@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 using FluentAssertions;
 using WebApp.Exceptions;
 
-namespace Test;
+namespace UnitTest;
 
 public class UnitTest2
 {

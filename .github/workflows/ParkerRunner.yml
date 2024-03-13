@@ -31,10 +31,15 @@ jobs:
           dotnet format --verify-no-changes
         working-directory: ./../../../ticketsrus-cort-enoch-parker/WebApp
 
-      - name: "unit test"
+      - name: "integration test"
         run: |
           dotnet test
         working-directory: ./../../../ticketsrus-cort-enoch-parker/Test  
+
+      - name: "unit test"
+        run:
+          dotnet test 
+        working-directory: ./../../../ticketsrus-cort-enoch-parker/UnitTest 
 
       - name: Teams notification
         uses: skitionek/notify-microsoft-teams@master
