@@ -44,7 +44,9 @@ public class TicketsApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
     }
 
 
+#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
     public async Task DisposeAsync()
+#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
     {
         await _dbContainer.StopAsync();
     }

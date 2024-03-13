@@ -26,7 +26,7 @@
                 @foreach (var ticket in tickets)
                 {
                     <tr>
-                        <td>@ticket.Occasion.OccasionName</td>
+                        <td>@ticket.Occasion?.OccasionName</td>
                         <td>@ticket.Guid</td>
                         <td>@ticket.IsUsed</td>
                     </tr>

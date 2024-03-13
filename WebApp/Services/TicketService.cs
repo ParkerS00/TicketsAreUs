@@ -39,19 +39,33 @@ public class TicketService : ITicketService
     public async Task<Ticket> GetTicket(int id)
     {
         var context = contextFactory.CreateDbContext();
-        return await context.Tickets
+        var result = await context.Tickets
             .Where(t => t.Id == id)
             .Include(t => t.Occasion)
             .FirstOrDefaultAsync();
+
+        if (result is not null)
+        {
+            return result;
+        }
+
+        throw new Exception();
     }
 
     public async Task<Ticket> GetTicketId(Guid guid)
     {
         var context = contextFactory.CreateDbContext();
-        return await context.Tickets
+        var result = await context.Tickets
             .Where(t => t.Guid == guid)
             .Include(t => t.Occasion)
             .FirstOrDefaultAsync();
+
+        if (result is not null)
+        {
+            return result;
+        }
+
+        throw new Exception();
     }
 
     public async Task UpdateTicket(int id)

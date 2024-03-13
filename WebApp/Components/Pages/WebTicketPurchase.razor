@@ -148,9 +148,9 @@
 
     public Occasion currentOccasion { get; set; } = new();
     public User currentUser { get; set; } = new();
-    public string userEmail { get; set; }
-    public string fromMail { get; set; }
-    private string senderKey { get; set; }
+    public string userEmail  = "Default";
+    public string fromMail = "Default";
+    private string senderKey = "Default";
 
 
     public IEnumerable<Ticket> tickets { get; set; } = new List<Ticket>();
@@ -162,8 +162,8 @@
         occasions = await occasionService.GetAllOccasions();
         currentOccasion = await occasionService.GetOccasion(OccasionId);
 
-        fromMail = config["emailSender"];
-        senderKey = config["senderKey"];
+        fromMail = config["emailSender"] ?? "Default";
+        senderKey = config["senderKey"] ?? "Default";
     }
 
     public async Task<string> SendEmail(MailAddress receiverEmail)

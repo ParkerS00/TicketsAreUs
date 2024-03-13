@@ -37,19 +37,33 @@ namespace WebApp.Services
         public async Task<Occasion> GetOccasion(int id)
         {
             var context = contextFactory.CreateDbContext();
-            return await context.Occasions
+            var result = await context.Occasions
                 .Where(o => o.Id == id)
                 .Include(o => o.Tickets)
                 .FirstOrDefaultAsync();
+
+            if (result is not null)
+            {
+                return result;
+            }
+
+            throw new Exception();
         }
 
         public async Task<Occasion> GetOccasionId(string name)
         {
             var context = contextFactory.CreateDbContext();
-            return await context.Occasions
+            var result =  await context.Occasions
                 .Where(o => o.OccasionName == name)
                 .Include(o => o.Tickets)
                 .FirstOrDefaultAsync();
+
+            if (result is not null)
+            {
+                return result;
+            }
+
+            throw new Exception();
         }
     }
 }

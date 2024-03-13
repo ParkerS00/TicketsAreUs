@@ -1,21 +1,11 @@
-﻿using RazorClassLib.Data;
-using System.Net.Http;
-using System.Net.Http.Json;
-using FluentAssertions;
-using WebApp.Exceptions;
-
-namespace UnitTest;
-
-public class UnitTest2
+﻿namespace UnitTest
 {
-    [Fact]
-    public void AddingTwoNumbers()
+    public class UnitTest1
     {
-        int num1 = 5;
-        int num2 = 5;
-
-        int num3 = num1 + num2;
-
-        num3.Should().Be(10);
+        [Fact]
+        public void Test1()
+        {
+            Assert.True(true);
+        }
     }
 }
