@@ -19,7 +19,6 @@ namespace WebApp.Services
             var context = contextFactory.CreateDbContext();
             context.Add(occasion);
             context.SaveChangesAsync();
-            //
         }
 
         public Task DropTables()
