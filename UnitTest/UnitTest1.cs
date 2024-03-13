@@ -17,6 +17,5 @@ public class UnitTest2
         int num3 = num1 + num2;
 
         num3.Should().Be(10);
-        Assert.False(true);
     }
 }
