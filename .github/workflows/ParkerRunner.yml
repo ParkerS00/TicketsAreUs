@@ -9,8 +9,10 @@ jobs:
     steps:
       - name: "clean" 
         run: |  
+          pwd
           docker compose down -v
           cd ../../
+          pwd
           rm -rf ./ticketsrus-cort-enoch-parker
         working-directory: ./../../../TicketsAreUs/ParkerStaging
 
