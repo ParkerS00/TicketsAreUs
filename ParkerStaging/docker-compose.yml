@@ -45,7 +45,7 @@ services:
       - 9460:9115
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./blackbox/blackbox.yml:/etc/blackbox/blackbox.yml
+      - ./Blackbox/blackbox.yml:/etc/blackbox/blackbox.yml
     command: --config.file=/etc/blackbox/blackbox.yml
     networks:
       otel:
@@ -60,7 +60,7 @@ services:
       - 9459:9090
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./Prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus:/prometheus
     depends_on:
       - blackbox
@@ -97,7 +97,7 @@ services:
     image: otel/opentelemetry-collector-contrib:0.75.0
     command: [ "--config=/etc/otel-collector-config.yaml" ]
     volumes:
-      - ./otel/otel.yml:/etc/otel-collector-config.yaml
+      - ./Otel/otel.yml:/etc/otel-collector-config.yaml
     restart: unless-stopped
     # ports:
     #   - 5436:8888
@@ -115,7 +115,7 @@ services:
     command: -config.file=/etc/loki/local-config.yml
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./loki/loki.yml:/etc/loki/local-config.yml
+      - ./Loki/loki.yml:/etc/loki/local-config.yml
       - loki:/data/loki
     restart: unless-stopped
     ports:
