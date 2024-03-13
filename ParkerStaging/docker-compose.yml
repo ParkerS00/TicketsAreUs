@@ -3,7 +3,7 @@ name: ticketsareus
 
 services:
   db:
-    container_name: database
+    container_name: parkerdatabase
     image: postgres
     restart: always
     environment:
@@ -17,7 +17,7 @@ services:
       - otel
 
   blazorapp:
-    container_name: parker-blazorapp
+    container_name: parkerblazorapp
     depends_on:
       - db
     build: ..
@@ -39,7 +39,7 @@ services:
 
   blackbox:
     image: prom/blackbox-exporter:v0.23.0
-    container_name: parker-blackbox
+    container_name: parkerblackbox
     restart: unless-stopped
     ports:
       - 9460:9115
@@ -53,7 +53,7 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.43.0
-    container_name: parker-prometheus
+    container_name: parkerprometheus
     hostname: prometheus
     restart: unless-stopped
     ports:
@@ -70,7 +70,7 @@ services:
 
   grafana:
     image: grafana/grafana:9.4.7
-    container_name: parker-grafana
+    container_name: parkergrafana
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
@@ -92,7 +92,7 @@ services:
 
 
   otel-collector:
-    container_name: parker-otel
+    container_name: parkerotel
     hostname: otel
     image: otel/opentelemetry-collector-contrib:0.75.0
     command: [ "--config=/etc/otel-collector-config.yaml" ]
@@ -111,7 +111,7 @@ services:
 
   loki:
     image: grafana/loki:2.8.0
-    container_name: parker-loki
+    container_name: parkerloki
     command: -config.file=/etc/loki/local-config.yml
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -123,23 +123,22 @@ services:
     networks:
       otel:
 
-
-  # tempo:
-  #   image: grafana/tempo:2.0.1
-  #   container_name: tempo
-  #   command: [ "-config.file=/etc/tempo.yaml" ]
-  #   volumes:
-  #     - /etc/localtime:/etc/localtime:ro
-  #     - ./tempo/tempo.yml:/etc/tempo.yaml
-  #     - tempo:/tmp/tempo
-  #   restart: unless-stopped
-  #   ports:
-  #     - 3200:3200  
-  #     - 4007:4317  
-  #   depends_on:
-  #     - otel-collector
-  #   networks:
-  #     otel:
+        # tempo:
+        #   image: grafana/tempo:2.0.1
+        #   container_name: tempo
+        #   command: [ "-config.file=/etc/tempo.yaml" ]
+        #   volumes:
+        #     - /etc/localtime:/etc/localtime:ro
+        #     - ./tempo/tempo.yml:/etc/tempo.yaml
+        #     - tempo:/tmp/tempo
+        #   restart: unless-stopped
+        #   ports:
+        #     - 3200:3200  
+        #     - 4007:4317  
+        #   depends_on:
+        #     - otel-collector
+        #   networks:
+        #     otel:
 
 networks:
   otel:
@@ -147,7 +146,7 @@ networks:
     driver: bridge
 
 volumes:
-  loki:
-  # tempo:
+  loki: # tempo:
+
   prometheus:
   grafana-data:
