@@ -44,6 +44,7 @@ namespace WebApp.Services
 
             if (result is not null)
             {
+                int things;
                 return result;
             }
 
