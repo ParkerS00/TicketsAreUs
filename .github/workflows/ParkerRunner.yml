@@ -23,6 +23,7 @@ jobs:
 
       - name: "build"
         run: |
+          pwd
           docker compose up --build -d
         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
 
