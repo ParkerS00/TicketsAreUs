@@ -12,34 +12,34 @@ jobs:
           docker compose down -v
           cd ../../
           rm -rf ./ticketsrus-cort-enoch-parker
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+        working-directory: ./../../../TicketsAreUs/ParkerStaging
 
       - name: "clone"
         run: |
           pwd
-          git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/SnowSE/ticketsrus-cort-enoch-parker.git
+          git clone https://${{secrets.PARKER_GITHUB_KEY}}@github.com/ParkerS00/TicketsAreUs.git
         working-directory: ./../../../
 
       - name: "build"
         run: |
           docker compose up --build -d
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
+        working-directory: ./../../../TicketsAreUs/ParkerStaging
 
       - name: "lint"
         run: |
           dotnet format --verify-no-changes
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/WebApp
+        working-directory: ./../../../TicketsAreUs/WebApp
 
       - name: "integration test"
         run: |
           dotnet test
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/Test  
+        working-directory: ./../../../TicketsAreUs/Test  
 
       - name: "unit test"
         run:
           pwd
           dotnet test 
-        working-directory: ./../../../ticketsrus-cort-enoch-parker/UnitTest 
+        working-directory: ./../../../TicketsAreUs/UnitTest 
 
       # - name: Teams notification
       #   uses: skitionek/notify-microsoft-teams@master
