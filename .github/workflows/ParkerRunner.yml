@@ -37,6 +37,7 @@ jobs:
 
       - name: "unit test"
         run:
+          pwd
           dotnet test 
         working-directory: ./../../../ticketsrus-cort-enoch-parker/UnitTest 
 
