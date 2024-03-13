@@ -4,7 +4,7 @@ on: [push]
 jobs:
   Deploy:
     runs-on:
-      - parker
+      - parkertwo
 
     steps:
       - name: "clean" 
@@ -13,7 +13,6 @@ jobs:
           cd ../../
           rm -rf ./ticketsrus-cort-enoch-parker
         working-directory: ./../../../ticketsrus-cort-enoch-parker/ParkerStaging
-        #
 
       - name: "clone"
         run: |
@@ -41,13 +40,13 @@ jobs:
           dotnet test 
         working-directory: ./../../../ticketsrus-cort-enoch-parker/UnitTest 
 
-      - name: Teams notification
-        uses: skitionek/notify-microsoft-teams@master
-        if: always()
-        with:
-          webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
-          needs: ${{ toJson(needs) }}
-          job: ${{ toJson(job) }}
-          steps: ${{ toJson(steps) }}
-          overwrite: "{title: `Overwrote title in ${workflow_link}`}"
+      # - name: Teams notification
+      #   uses: skitionek/notify-microsoft-teams@master
+      #   if: always()
+      #   with:
+      #     webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
+      #     needs: ${{ toJson(needs) }}
+      #     job: ${{ toJson(job) }}
+      #     steps: ${{ toJson(steps) }}
+      #     overwrite: "{title: `Overwrote title in ${workflow_link}`}"
 
