@@ -53,7 +53,7 @@ namespace WebApp.Services
         public async Task<Occasion> GetOccasionId(string name)
         {
             var context = contextFactory.CreateDbContext();
-            var result =  await context.Occasions
+            var result = await context.Occasions
                 .Where(o => o.OccasionName == name)
                 .Include(o => o.Tickets)
                 .FirstOrDefaultAsync();

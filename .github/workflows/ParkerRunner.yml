@@ -44,6 +44,11 @@ jobs:
           dotnet test 
         working-directory: ./../../../TicketsAreUs/UnitTest 
 
+      - name: "build warning"
+        run: |
+          dotnet build --warnaserror
+        working-directory: ./../../../TicketsAreUs
+
       # - name: Teams notification
       #   uses: skitionek/notify-microsoft-teams@master
       #   if: always()

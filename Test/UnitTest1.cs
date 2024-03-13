@@ -1,7 +1,7 @@
-using RazorClassLib.Data;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Json;
 using FluentAssertions;
+using RazorClassLib.Data;
 using WebApp.Exceptions;
 
 namespace Test
