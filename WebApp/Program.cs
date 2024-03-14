@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Configs;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -45,13 +46,18 @@ builder.Services.AddOpenTelemetry()
       .WithTracing(tracing => tracing
           .AddAspNetCoreInstrumentation()
           .AddConsoleExporter()
+          .AddZipkinExporter(o =>
+            o.Endpoint = new Uri("http://zipkin:9411"))
           .AddOtlpExporter(o =>
             o.Endpoint = new Uri("http://otel-collector:4317")))
       .WithMetrics(metrics => metrics
           .AddAspNetCoreInstrumentation()
           .AddConsoleExporter()
           .AddOtlpExporter(o =>
-            o.Endpoint = new Uri("http://otel-collector:4317")));
+            o.Endpoint = new Uri("http://otel-collector:4317"))
+          .AddMeter("Microsoft.AspNetCore.Hosting")
+          .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
+          .AddMeter("System.Net.Http"));
 
 builder.Services.AddDbContextFactory<TicketContext>(config => config.UseNpgsql(builder.Configuration["pec_tickets"]));
 builder.Services.AddSingleton<IOccasionService, OccasionService>();

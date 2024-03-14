@@ -49,13 +49,13 @@ jobs:
           dotnet build --warnaserror
         working-directory: ./../../../TicketsAreUs
 
-      # - name: Teams notification
-      #   uses: skitionek/notify-microsoft-teams@master
-      #   if: always()
-      #   with:
-      #     webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
-      #     needs: ${{ toJson(needs) }}
-      #     job: ${{ toJson(job) }}
-      #     steps: ${{ toJson(steps) }}
-      #     overwrite: "{title: `Overwrote title in ${workflow_link}`}"
+      - name: Teams notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: always()
+        with:
+          webhook_url: ${{ secrets.PARKER_TEAMS_HOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+          overwrite: "{title: `I am sad ${workflow_link}`}"
 

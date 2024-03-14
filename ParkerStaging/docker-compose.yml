@@ -99,6 +99,8 @@ services:
     volumes:
       - ./Otel/otel.yml:/etc/otel-collector-config.yaml
     restart: unless-stopped
+    depends_on:
+      - zipkin
     # ports:
     #   - 5436:8888
     #   - 5433:8889
@@ -123,22 +125,16 @@ services:
     networks:
       otel:
 
-        # tempo:
-        #   image: grafana/tempo:2.0.1
-        #   container_name: tempo
-        #   command: [ "-config.file=/etc/tempo.yaml" ]
-        #   volumes:
-        #     - /etc/localtime:/etc/localtime:ro
-        #     - ./tempo/tempo.yml:/etc/tempo.yaml
-        #     - tempo:/tmp/tempo
-        #   restart: unless-stopped
-        #   ports:
-        #     - 3200:3200  
-        #     - 4007:4317  
-        #   depends_on:
-        #     - otel-collector
-        #   networks:
-        #     otel:
+
+  zipkin:
+    container_name: parkerzipkin
+    image: openzipkin/zipkin
+    restart: always
+    ports:
+      - 9465:9411
+    networks:
+      otel:
+
 
 networks:
   otel:
