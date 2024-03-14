@@ -2,6 +2,7 @@
 using RazorClassLib.Data;
 using RazorClassLib.Request;
 using RazorClassLib.Services;
+using Telemetry;
 using WebApp.Exceptions;
 
 namespace WebApp.Services;
@@ -30,6 +31,8 @@ public class TicketService : ITicketService
 
     public async Task<List<Ticket>> GetAllTickets()
     {
+        using var myActivity = ParkerTraces.TicketSource.StartActivity("Getting All Tickets");
+
         var context = contextFactory.CreateDbContext();
         return await context.Tickets
             .Include(t => t.Occasion)

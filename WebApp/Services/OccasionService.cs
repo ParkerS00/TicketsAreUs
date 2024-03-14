@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RazorClassLib.Data;
 using RazorClassLib.Services;
+using Telemetry;
 
 namespace WebApp.Services
 {
@@ -28,6 +29,9 @@ namespace WebApp.Services
 
         public async Task<List<Occasion>> GetAllOccasions()
         {
+            using var myActivity = ParkerTraces.OccasionSource.StartActivity("Getting All Occasions");
+            ParkerMetrics.occasionCounter.Add(3);
+
             var context = contextFactory.CreateDbContext();
             return await context.Occasions
                 .Include(o => o.Tickets)

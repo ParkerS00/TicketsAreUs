@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using Configs;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -9,6 +8,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using RazorClassLib.Data;
 using RazorClassLib.Services;
+using Telemetry;
 using WebApp.Components;
 using WebApp.Services;
 
@@ -36,7 +36,7 @@ builder.Logging.AddOpenTelemetry(options =>
                 .AddService(serviceName))
         .AddOtlpExporter(opt =>
             {
-                opt.Endpoint = new Uri("http://otel-collector:4317");
+                opt.Endpoint = new Uri("http://otel-collector:4317/");
             })
         .AddConsoleExporter();
 });
@@ -44,20 +44,20 @@ builder.Logging.AddOpenTelemetry(options =>
 builder.Services.AddOpenTelemetry()
       .ConfigureResource(resource => resource.AddService(serviceName))
       .WithTracing(tracing => tracing
+          .AddSource(ParkerTraces.GetAllOccasionsName)
+          .AddSource(ParkerTraces.GetAllTicketsName)
           .AddAspNetCoreInstrumentation()
           .AddConsoleExporter()
           .AddZipkinExporter(o =>
-            o.Endpoint = new Uri("http://zipkin:9411"))
+            o.Endpoint = new Uri("http://zipkin:9411/"))
           .AddOtlpExporter(o =>
-            o.Endpoint = new Uri("http://otel-collector:4317")))
+            o.Endpoint = new Uri("http://otel-collector:4317/")))
       .WithMetrics(metrics => metrics
           .AddAspNetCoreInstrumentation()
+          .AddMeter(ParkerMetrics.OccasionMetricName)
           .AddConsoleExporter()
           .AddOtlpExporter(o =>
-            o.Endpoint = new Uri("http://otel-collector:4317"))
-          .AddMeter("Microsoft.AspNetCore.Hosting")
-          .AddMeter("Microsoft.AspNetCore.Server.Kestrel")
-          .AddMeter("System.Net.Http"));
+            o.Endpoint = new Uri("http://otel-collector:4317/")));
 
 builder.Services.AddDbContextFactory<TicketContext>(config => config.UseNpgsql(builder.Configuration["pec_tickets"]));
 builder.Services.AddSingleton<IOccasionService, OccasionService>();
