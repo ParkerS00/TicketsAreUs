@@ -48,8 +48,6 @@ builder.Services.AddOpenTelemetry()
           .AddSource(ParkerTraces.GetAllTicketsName)
           .AddAspNetCoreInstrumentation()
           .AddConsoleExporter()
-          .AddZipkinExporter(o =>
-            o.Endpoint = new Uri("http://zipkin:9411/"))
           .AddOtlpExporter(o =>
             o.Endpoint = new Uri("http://otel-collector:4317/")))
       .WithMetrics(metrics => metrics
