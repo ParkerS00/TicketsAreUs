@@ -7,10 +7,23 @@ using WebApp.Exceptions;
 
 namespace WebApp.Services;
 
-public class TicketService : ITicketService
+public partial class TicketService : ITicketService
 {
     private readonly ILogger<TicketService> logger;
     private IDbContextFactory<TicketContext> contextFactory;
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Added Tickets To Database")]
+    static partial void LogAddTicket(ILogger logger, string description);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Updating Tickets In The Database")]
+    static partial void LogUpdateTicket(ILogger logger, string description);
+
+    [LoggerMessage(Level = LogLevel.Warning, Message = "Getting Tickets From The Database")]
+    static partial void LogGetTicket(ILogger logger, string description);
+
+    [LoggerMessage(Level = LogLevel.Information, Message = "Getting All Tickets In The Database")]
+    static partial void LogGetAllTickets(ILogger logger, string description);
+
     public TicketService(ILogger<TicketService> logger, IDbContextFactory<TicketContext> contextFactory)
     {
         this.logger = logger;
@@ -22,6 +35,7 @@ public class TicketService : ITicketService
         var context = contextFactory.CreateDbContext();
         context.Add(ticket);
         await context.SaveChangesAsync();
+        LogAddTicket(logger, $"Added {ticket.Guid} To The Database");
     }
 
     public Task DropTables()
@@ -32,6 +46,7 @@ public class TicketService : ITicketService
     public async Task<List<Ticket>> GetAllTickets()
     {
         using var myActivity = ParkerTraces.TicketSource.StartActivity("Getting All Tickets");
+        LogGetAllTickets(logger, $"Getting All The Tickets");
 
         var context = contextFactory.CreateDbContext();
         return await context.Tickets
@@ -46,6 +61,8 @@ public class TicketService : ITicketService
             .Where(t => t.Id == id)
             .Include(t => t.Occasion)
             .FirstOrDefaultAsync();
+
+        LogGetTicket(logger, $"Getting {result!.Id} From The Database");
 
         if (result is not null)
         {
@@ -65,6 +82,7 @@ public class TicketService : ITicketService
 
         if (result is not null)
         {
+            LogGetTicket(logger, $"Getting {result!.Guid} From The Database");
             return result;
         }
 
@@ -86,6 +104,7 @@ public class TicketService : ITicketService
             oldTicket.IsUsed = true;
             context.Update(oldTicket);
             await context.SaveChangesAsync();
+            LogUpdateTicket(logger, $"Updated {oldTicket.Guid} To New Values");
         }
         else
         {
