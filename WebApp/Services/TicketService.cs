@@ -62,7 +62,7 @@ public partial class TicketService : ITicketService
             .Include(t => t.Occasion)
             .FirstOrDefaultAsync();
 
-        LogGetTicket(logger, $"Getting {result!.Id} From The Database");
+        LogGetTicket(logger, $"Getting Ticket {result!.Id} From The Database");
 
         if (result is not null)
         {
