@@ -135,6 +135,16 @@ services:
     networks:
       otel:
 
+  proxy:
+    container_name: parkerproxy
+    image: nginx
+    ports:
+      - 5438:80
+    networks:
+      otel:
+    volumes:
+      - ./nginx-default.conf:/etc/nginx/conf.d/default.conf
+
 
 networks:
   otel:
@@ -142,7 +152,6 @@ networks:
     driver: bridge
 
 volumes:
-  loki: # tempo:
-
+  loki: 
   prometheus:
   grafana-data:
