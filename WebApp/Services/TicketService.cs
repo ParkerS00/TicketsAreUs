@@ -13,16 +13,24 @@ public partial class TicketService : ITicketService
     private IDbContextFactory<TicketContext> contextFactory;
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Added Tickets To Database")]
+#pragma warning disable SYSLIB1015 // Argument is not referenced from the logging message
     static partial void LogAddTicket(ILogger logger, string description);
+#pragma warning restore SYSLIB1015 // Argument is not referenced from the logging message
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Updating Tickets In The Database")]
+#pragma warning disable SYSLIB1015 // Argument is not referenced from the logging message
     static partial void LogUpdateTicket(ILogger logger, string description);
+#pragma warning restore SYSLIB1015 // Argument is not referenced from the logging message
 
     [LoggerMessage(Level = LogLevel.Warning, Message = "Getting Tickets From The Database")]
+#pragma warning disable SYSLIB1015 // Argument is not referenced from the logging message
     static partial void LogGetTicket(ILogger logger, string description);
+#pragma warning restore SYSLIB1015 // Argument is not referenced from the logging message
 
     [LoggerMessage(Level = LogLevel.Information, Message = "Getting All Tickets In The Database")]
+#pragma warning disable SYSLIB1015 // Argument is not referenced from the logging message
     static partial void LogGetAllTickets(ILogger logger, string description);
+#pragma warning restore SYSLIB1015 // Argument is not referenced from the logging message
 
     public TicketService(ILogger<TicketService> logger, IDbContextFactory<TicketContext> contextFactory)
     {
@@ -62,7 +70,7 @@ public partial class TicketService : ITicketService
             .Include(t => t.Occasion)
             .FirstOrDefaultAsync();
 
-        LogGetTicket(logger, $"Getting {result!.Id} From The Database");
+        LogGetTicket(logger, $"Getting Ticket {result!.Id} From The Database");
 
         if (result is not null)
         {
