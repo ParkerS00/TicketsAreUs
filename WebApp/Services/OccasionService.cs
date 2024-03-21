@@ -11,21 +11,25 @@ namespace WebApp.Services
         private IDbContextFactory<TicketContext> contextFactory;
 
         [LoggerMessage(Level = LogLevel.Information, Message = "Added Occasions To Database")]
+#pragma warning disable SYSLIB1015 // Argument is not referenced from the logging message
         static partial void LogAddOccasion(ILogger logger, string description);
+#pragma warning restore SYSLIB1015 // Argument is not referenced from the logging message
 
         [LoggerMessage(Level = LogLevel.Information, Message = "Getting All Occasions From The Database")]
+#pragma warning disable SYSLIB1015 // Argument is not referenced from the logging message
         static partial void LogGetAllOccasion(ILogger logger, string description);
+#pragma warning restore SYSLIB1015 // Argument is not referenced from the logging message
 
         [LoggerMessage(Level = LogLevel.Information, Message = "Getting Occasion From The Database")]
+#pragma warning disable SYSLIB1015 // Argument is not referenced from the logging message
         static partial void LogGetOccasion(ILogger logger, string description);
+#pragma warning restore SYSLIB1015 // Argument is not referenced from the logging message
 
         public OccasionService(ILogger<OccasionService> logger, IDbContextFactory<TicketContext> contextFactory)
         {
             this.logger = logger;
             this.contextFactory = contextFactory;
         }
-
-
         public async Task AddNewOccasion(Occasion occasion)
         {
 
