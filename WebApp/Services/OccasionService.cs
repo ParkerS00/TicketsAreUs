@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using RazorClassLib.Data;
 using RazorClassLib.Services;
 using Telemetry;
@@ -32,7 +33,7 @@ namespace WebApp.Services
         }
         public async Task AddNewOccasion(Occasion occasion)
         {
-
+            var timer = Stopwatch.StartNew();
             var context = contextFactory.CreateDbContext();
             context.Add(occasion);
             await context.SaveChangesAsync();
@@ -40,6 +41,7 @@ namespace WebApp.Services
             ParkerMetrics.occasionUpDown.Add(1);
             ParkerMetrics.occasionsChecked -= 1;
             ParkerMetrics.occasionsAdded += 1;
+            ParkerMetrics.occasionHist.Record(timer.Elapsed.Microseconds);
         }
 
         public Task DropTables()
