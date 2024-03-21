@@ -33,6 +33,9 @@ namespace WebApp.Services
             context.Add(occasion);
             await context.SaveChangesAsync();
             LogAddOccasion(logger, $"Added {occasion.OccasionName} to the database");
+            ParkerMetrics.occasionUpDown.Add(1);
+            ParkerMetrics.occasionsChecked -= 1;
+            ParkerMetrics.occasionsAdded += 1;
         }
 
         public Task DropTables()
@@ -44,6 +47,7 @@ namespace WebApp.Services
         {
             using var myActivity = ParkerTraces.OccasionSource.StartActivity("Getting All Occasions");
             ParkerMetrics.occasionCounter.Add(3);
+            ParkerMetrics.occasionsChecked += 3;
             LogGetAllOccasion(logger, $"Getting All Occasions");
 
             var context = contextFactory.CreateDbContext();
@@ -61,6 +65,8 @@ namespace WebApp.Services
                 .FirstOrDefaultAsync();
 
             LogGetOccasion(logger, $"Getting {result!.OccasionName} From The Database");
+            ParkerMetrics.occasionUpDown.Add(-1);
+            ParkerMetrics.occasionsChecked += 1;
 
             if (result is not null)
             {
