@@ -53,7 +53,7 @@ jobs:
         run: |
           docker build -t 144.17.92.12:5000/parker/blazor-web:1 .
           docker push 144.17.92.12:5000/parker/blazor-web:1
-          kubectl apply -f kube/
+          kubectl apply -f Kube/
         working-directory: ./../../../TicketsAreUs
 
       - name: Teams notification
