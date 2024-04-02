@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: parker-blazor
+  name: parker-blazor-service
+spec:
+  type: ClusterIP
+  selector:
+    app: blazorapp
+  ports:
+    - port: 80
+      targetPort: 8080

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: parker-blazor
+  name: parker-blazor-app
+  labels:
+    app: blazorapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blazorapp
+  template:
+    metadata:
+      labels:
+        app: blazorapp
+    spec:
+      containers:
+      - name: blazorapp
+        image: 144.17.92.12:5000/parker/blazor-web:1
+        ports:
+        - containerPort: 8080

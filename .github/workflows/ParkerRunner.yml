@@ -49,6 +49,12 @@ jobs:
           dotnet build --warnaserror
         working-directory: ./../../../TicketsAreUs
 
+      - name: "kubernetes"
+        run: |
+          docker build -t 144.17.92.12:5000/parker/blazor-web:1 .
+          docker push 144.17.92.12:5000/parker/blazor-web:1
+          kubectl apply -f kube/
+
       - name: Teams notification
         uses: skitionek/notify-microsoft-teams@master
         if: always()
