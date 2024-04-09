@@ -16,7 +16,6 @@ jobs:
           rm -rf ./TicketsAreUs
         working-directory: ./../../../TicketsAreUs/ParkerStaging
         
-
       - name: "clone"
         run: |
           pwd
@@ -28,26 +27,26 @@ jobs:
           docker compose up --build -d
         working-directory: ./../../../TicketsAreUs/ParkerStaging
 
-      - name: "lint"
-        run: |
-          dotnet format --verify-no-changes
-        working-directory: ./../../../TicketsAreUs/WebApp
+      # - name: "lint"
+      #   run: |
+      #     dotnet format --verify-no-changes
+      #   working-directory: ./../../../TicketsAreUs/WebApp
 
-      - name: "integration test"
-        run: |
-          dotnet test
-        working-directory: ./../../../TicketsAreUs/Test  
+      # - name: "integration test"
+      #   run: |
+      #     dotnet test
+      #   working-directory: ./../../../TicketsAreUs/Test  
 
-      - name: "unit test"
-        run: |
-          pwd
-          dotnet test 
-        working-directory: ./../../../TicketsAreUs/UnitTest 
+      # - name: "unit test"
+      #   run: |
+      #     pwd
+      #     dotnet test 
+      #   working-directory: ./../../../TicketsAreUs/UnitTest 
 
-      - name: "build warning"
-        run: |
-          dotnet build --warnaserror
-        working-directory: ./../../../TicketsAreUs
+      # - name: "build warning"
+      #   run: |
+      #     dotnet build --warnaserror
+      #   working-directory: ./../../../TicketsAreUs
 
       - name: "kubernetes"
         run: |

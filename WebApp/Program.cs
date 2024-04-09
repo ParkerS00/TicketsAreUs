@@ -36,8 +36,7 @@ builder.Logging.AddOpenTelemetry(options =>
                 .AddService(serviceName))
         .AddOtlpExporter(opt =>
             {
-                opt.Endpoint = new Uri(builder.Configuration["COLLECTOR_URL"] ??
-                throw new Exception("otel collector not found"));
+                opt.Endpoint = new Uri("http://otel-collector:4317/");
             })
         .AddConsoleExporter();
 });
@@ -50,15 +49,13 @@ builder.Services.AddOpenTelemetry()
           .AddAspNetCoreInstrumentation()
           .AddConsoleExporter()
           .AddOtlpExporter(o =>
-            o.Endpoint = new Uri(builder.Configuration["COLLECTOR_URL"] ??
-                throw new Exception("otel collector not found"))))
+            o.Endpoint = new Uri("http://otel-collector:4317/")))
       .WithMetrics(metrics => metrics
           .AddAspNetCoreInstrumentation()
           .AddMeter(ParkerMetrics.OccasionMetricName)
           .AddConsoleExporter()
           .AddOtlpExporter(o =>
-            o.Endpoint = new Uri(builder.Configuration["COLLECTOR_URL"] ??
-                throw new Exception("otel collector not found"))));
+            o.Endpoint = new Uri("http://otel-collector:4317/")));
 
 builder.Services.AddDbContextFactory<TicketContext>(config => config.UseNpgsql(builder.Configuration["pec_tickets"]));
 builder.Services.AddSingleton<IOccasionService, OccasionService>();
