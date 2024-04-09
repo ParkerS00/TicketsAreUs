@@ -31,3 +31,8 @@ spec:
           value: Admin
         - name: GF_AUTH_DISABLE_LOGIN_FORM
           value: "true"
+
+      volumes:
+      - name: grafana-config
+        configMap: 
+          name: grafana-config
