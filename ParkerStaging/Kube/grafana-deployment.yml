@@ -20,6 +20,10 @@ spec:
         image: grafana/grafana:9.4.7
         ports:
         - containerPort: 3000
+        volumeMounts:
+        - name: grafana-config
+          mountPath: /etc/grafana-config.yml
+          subPath: grafana-config.yml
         env:
         - name: GF_AUTH_ANONYMOUS_ENABLED
           value: "true"
