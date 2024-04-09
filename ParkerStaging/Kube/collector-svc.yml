@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: parker-blazor
+  name: parker-otel
+spec:
+  type: ClusterIP
+  selector:
+    app: parker-otel-collector
+  ports:
+    - port: 4317
+      targetPort: 4317
