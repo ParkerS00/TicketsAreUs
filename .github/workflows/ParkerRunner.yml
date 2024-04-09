@@ -53,9 +53,10 @@ jobs:
         run: |
           docker build -t 144.17.92.12:5000/parker/blazor-web:1 .
           docker push 144.17.92.12:5000/parker/blazor-web:1
-          kubectl apply -f ParkerStaging/Kube/
 
           # kubectl -n parker-blazor create configmap blazor-web-postgres-init --from-file=Dump/20240215.09.46.07.sql
+          kubectl apply -f ParkerStaging/Kube/
+
         working-directory: ./../../../TicketsAreUs
 
       - name: Teams notification
