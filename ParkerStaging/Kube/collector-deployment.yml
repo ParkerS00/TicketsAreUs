@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: parker-blazor
-  name: parker-otel-app
+  name: parker-otel-deployment
   labels:
     app: parker-otel
 spec:
@@ -22,7 +22,7 @@ spec:
         - containerPort: 4317
         volumeMounts:
         - name: otel-cofig-volume
-          mountPath: /etc/otelcol-contrib/config.yaml
+          mountPath: /etc/otel-collector-config.yaml
           subPath: otel-collector-config.yml
 
       volumes:
