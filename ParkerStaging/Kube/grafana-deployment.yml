@@ -18,6 +18,5 @@ spec:
       containers:
       - name: parker-grafana
         image: grafana/grafana:9.4.7
-        command: [ "-config.file=/etc/loki/local-config.yml" ]
         ports:
-        - containerPort: 3100
+        - containerPort: 3000
