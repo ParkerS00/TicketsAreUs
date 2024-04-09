@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: parker-blazor
+  name: parker-grafana-deployment
+  labels:
+    app: parker-grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: parker-grafana
+  template:
+    metadata:
+      labels:
+        app: parker-grafana
+    spec:
+      containers:
+      - name: parker-grafana
+        image: grafana/grafana:9.4.7
+        command: [ "-config.file=/etc/loki/local-config.yml" ]
+        ports:
+        - containerPort: 3100

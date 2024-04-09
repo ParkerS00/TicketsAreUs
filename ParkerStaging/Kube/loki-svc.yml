@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: parker-blazor
+  name: parker-loki-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: parker-loki
+  ports:
+    - port: 3100
+      targetPort: 3100
