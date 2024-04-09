@@ -57,8 +57,8 @@ jobs:
 
           pwd
 
-          kubectl -n parker-blazor delete configmap ParkerStaging/KubeConfigs/otel-config || true
-          kubectl -n parker-blazor create configmap otel-config --from-file=/ParkerStaging/KubeConfigs/otel-collector-config.yml
+          kubectl -n parker-blazor delete configmap otel-config || true
+          kubectl -n parker-blazor create configmap otel-config --from-file=./ParkerStaging/KubeConfigs/otel-collector-config.yml
           
           kubectl apply -f ParkerStaging/Kube/
 
