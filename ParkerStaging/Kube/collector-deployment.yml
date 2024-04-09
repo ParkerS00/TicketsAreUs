@@ -21,7 +21,7 @@ spec:
         ports:
         - containerPort: 4317
         volumeMounts:
-        - name: otel-cofig
+        - name: otel-config
           mountPath: /etc/otel-collector-config.yaml
           subPath: otel-collector-config.yml
 
