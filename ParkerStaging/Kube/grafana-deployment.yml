@@ -26,7 +26,7 @@ spec:
           subPath: grafana-config.yml
         - name: grafana-dashboards
           mountPath: /etc/grafana-dashboards.yml
-          subPath: ParkerStaging/grafana/provisioning/dashboards/dashboards.yml
+          subPath: ParkerStaging/grafana/provisioning/dashboards
         env:
         - name: GF_AUTH_ANONYMOUS_ENABLED
           value: "true"
