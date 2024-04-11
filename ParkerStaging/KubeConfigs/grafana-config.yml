@@ -21,13 +21,3 @@ datasources:
     basicAuth: false
     version: 1
     editable: false
-
-  # - name: Tempo
-  #   type: tempo
-  #   uid: tempo
-  #   access: proxy
-  #   url: http://tempo:3200
-  #   basicAuth: false
-  #   isDefault: false
-  #   version: 1
-  #   editable: false

@@ -18,6 +18,6 @@ spec:
       containers:
       - name: parker-loki
         image: grafana/loki:2.8.0
-        args: [ "-config.file=/etc/Loki/local-config.yml" ]
+        # args: [ "-config.file=/etc/Loki/local-config.yml" ]
         ports:
         - containerPort: 3100
