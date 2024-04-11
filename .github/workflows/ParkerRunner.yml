@@ -64,7 +64,7 @@ jobs:
           kubectl -n parker-blazor create configmap grafana-config --from-file=./ParkerStaging/KubeConfigs/grafana-config.yml
 
           kubectl -n parker-blazor delete configmap grafana-dashboards || true
-          kubectl -n parker-balzor create configmap grafana-dashboards --from-file=./ParkerStaging/grafana/dashboards/dashboards.yml
+          kubectl -n parker-balzor create configmap grafana-dashboards --from-file=./ParkerStaging/grafana/provisioning/dashboards/dashboards.yml
           
           kubectl apply -f ParkerStaging/Kube/
 
