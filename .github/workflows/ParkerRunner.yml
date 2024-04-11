@@ -59,6 +59,9 @@ jobs:
 
           kubectl -n parker-blazor delete configmap otel-config || true
           kubectl -n parker-blazor create configmap otel-config --from-file=./ParkerStaging/KubeConfigs/otel-collector-config.yml
+
+          kubectl -n parker-blazor delete configmap grafana-config || true
+          kubectl -n parker-blazor create configmap grafana-config --from-file=./ParkerStaging/KubeConfigs/grafana-config.yml
           
           kubectl apply -f ParkerStaging/Kube/
 
