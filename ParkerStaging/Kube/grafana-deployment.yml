@@ -24,6 +24,9 @@ spec:
         - name: grafana-config
           mountPath: /etc/grafana-config.yml
           subPath: grafana-config.yml
+        - name: grafana-dashboards
+          mountPath: /etc/grafana-dashboards.yml
+          subPath: ParkerStaging/grafana/dashboards/dashboards.yml
         env:
         - name: GF_AUTH_ANONYMOUS_ENABLED
           value: "true"
@@ -36,3 +39,6 @@ spec:
       - name: grafana-config
         configMap: 
           name: grafana-config
+      - name: grafana-dashboards
+        configMap:
+          name: grafana-dashboards
