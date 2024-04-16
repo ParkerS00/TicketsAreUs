@@ -10,4 +10,4 @@ jobs:
                 CONTAINER_NAME=$(kubectl -n parker-blazor get pods --no-headers -o cutom-columns=":metadata.name" grep "blazor-web-db-deployment")
                 kubectl -n parker-blazor exec -t $CONTAINER_NAME -- \
                   pg_dumpall -c -U postgres \
-                  > home/parker/TicketsAreUs/Dump/dump.sql 
+                  > /home/parker/actions-runners/TicketsAreUs/Dump/dump.sql 
