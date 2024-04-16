@@ -7,7 +7,8 @@ jobs:
         steps:
             - name: backup
               run: |
+                mkdir -p /home/parker/Dump
                 CONTAINER_NAME=$(kubectl -n parker-blazor get pods --no-headers -o custom-columns=":metadata.name" | grep "blazor-web-db-deployment")
                 kubectl -n parker-blazor exec -t $CONTAINER_NAME -- \
                   pg_dumpall -c -U postgres \
-                  > /home/parker/actions-runners/TicketsAreUs/Dump/dump.sql 
+                  > /home/parker/Dump/dump.sql 
