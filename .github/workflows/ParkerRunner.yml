@@ -66,9 +66,10 @@ jobs:
           kubectl -n parker-blazor delete configmap grafana-dashboards || true
           kubectl -n parker-blazor create configmap grafana-dashboards --from-file=./ParkerStaging/grafana/provisioning/dashboards
           
-          for file in ./kube; do
+          RUN_ID=${{ github.run_id }}
+          for file in ./Kube; do
             echo "Applying $file"
-            kubectl apply -f "$file"
+            cat "$file" | envsubst | kubectl apply -f -
           done
 
           # kubectl apply -f ParkerStaging/Kube/
