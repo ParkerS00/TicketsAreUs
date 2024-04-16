@@ -70,7 +70,7 @@ services:
     restart: unless-stopped
     user: root
     ports:
-      - 3000:3000
+      - 3456:3000
     depends_on:
       - prometheus
       - loki
