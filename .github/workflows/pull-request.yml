@@ -1,0 +1,10 @@
+name: PullRequest
+on: 
+    pull_request: 
+      types: [opened]
+jobs:
+    deploy-to-kubernetes:
+      runs-on: parkertwo
+      steps:
+        - name: check out code
+          uses: actions/checkout@v4
