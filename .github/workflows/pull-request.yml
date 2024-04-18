@@ -11,10 +11,20 @@ jobs:
         - name: deploy kubernetes environment
           run: |
             export PULL_REQUEST_ID=${{github.event.pull_request.number}}
+            export RUN_SALT="pr-${PULL_REQUEST_ID}-${GITHUB_RUN_ID}"
+            export NAMESPACE=parker-pr-$PULL_REQUEST_ID
 
-            kubectl create namespace parker-pr-$PULL_REQUEST_ID || true
+            kubectl create namespace $NAMESPACE || true
 
             pwd
-            
-            kubectl -n parker-pr-$PULL_REQUEST_ID delete configmap blazor-web-postgres-init || true
-            kubectl -n parker-pr-$PULL_REQUEST_ID create configmap blazor-web-postgres-init --from-file=Dump/20240215.09.46.07.sql
+
+            kubectl -n $NAMESPACE delete configmap blazor-web-postgres-init || true
+            kubectl -n $NAMESPACE create configmap blazor-web-postgres-init --from-file=Dump/20240215.09.46.07.sql
+
+            docker build -t 144.17.92.12:5000/parker/blazor-web:$RUN_SALT .
+            docker push 144.17.92.12:5000/parker/blazor-web:$RUN_SALT
+
+            for file in ./ParkerStaging/KubePR/*; do
+              echo "Applying $file"
+              cat "$file" | envsubst | kubectl apply -f -
+            done
