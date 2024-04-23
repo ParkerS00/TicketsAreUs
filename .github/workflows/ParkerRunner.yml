@@ -52,6 +52,8 @@ jobs:
 
       - name: "kubernetes"
         run: |
+          kubectl create namespace parker-blazor || true
+
           docker build -t 144.17.92.12:5000/parker/blazor-web:$GITHUB_RUN_ID . # Alex thing
           docker push 144.17.92.12:5000/parker/blazor-web:$GITHUB_RUN_ID # Alex thing
 
