@@ -3,7 +3,13 @@ kind: Ingress
 metadata:
   namespace: parker-blazor
   name: parker-blazor-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: cert-manager-webhook-duckdns-parker-production
 spec:
+  tls:
+  - hosts:
+    - parker-tickets-kube.duckdns.org
+      secretName: parker-kube-tls-production
   ingressClassName: nginx
   rules:
   - host: parker-tickets-kube.duckdns.org
