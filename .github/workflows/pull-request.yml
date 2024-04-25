@@ -28,26 +28,12 @@ jobs:
               echo "Applying $file"
               cat "$file" | envsubst | kubectl apply -f -
             done
-        - name: Create Comment
-          uses: actions/github-script@v7
+        - uses: actions/github-script@v7
           with:
-            github-token: ${{ secrets.PARKER_GITHUB_KEY }}
             script: |
-              const issueNumber = context.issue.number;
-              const owner = context.repo.owner;
-              const repo = context.repo.repo;
-              const prNumber = context.payload.pull_request.number;
-              const url = `http://${prNumber}.parker-tickets-kube.duckdns.org`;
-  
-              console.log('Issue Number:', issueNumber);
-              console.log('Owner:', owner);
-              console.log('Repo:', repo);
-              console.log('PR Number:', prNumber);
-              console.log('Generated URL:', url);
-  
               github.rest.issues.createComment({
-                issue_number: issueNumber,
-                owner: owner,
-                repo: repo,
-                body: `Check out the pull request at ${url}`
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: 'check out the pull request at <http://${{ github.event.pull_request.number }}.parker-tickets-kube.duckdns.org>'
               });
