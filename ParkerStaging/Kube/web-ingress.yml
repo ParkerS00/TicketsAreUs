@@ -9,7 +9,7 @@ spec:
   tls:
   - hosts:
     - parker-tickets-kube.duckdns.org
-      secretName: parker-kube-tls-production
+    secretName: parker-kube-tls-production
   ingressClassName: nginx
   rules:
   - host: parker-tickets-kube.duckdns.org
